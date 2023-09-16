@@ -1,0 +1,16 @@
+export const ColorManager = {
+  primary: "#1C7FBE",
+  secondary: "#F2FEF0",
+  success: "#35A539",
+  error: "#E54545",
+  info: "#0693C8",
+  bgColor: "#F5F5F5",
+  primaryFontColor: "#2F4858",
+  secondaryFontColor: "#7B7B7B",
+  hintColor: "#B3B3B3",
+  hyperLinkColor: "#386FFF",
+  white: "#FFFFFF",
+  black: "#000000",
+  gray02: "#D9D9D9",
+  darkGray: "#262626",
+};
