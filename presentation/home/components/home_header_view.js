@@ -1,19 +1,24 @@
-import React from "react";
-import { Image, StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { Image, StyleSheet, View, Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
 import { ColorManager } from "../../../core/resources/color_manager";
-import ProfileIcon from "../../../assets/icons/profile_icon";
 import SizeBox from "../../../components/base/custom/size_box";
+import LogOutModal from "./logout_modal";
 
-const HeaderHomeView = ({ navigation }) => {
+const HomeHeaderView = ({ setToken }) => {
   const userData = useSelector((state) => state.user.userData);
-  console.log("user", userData.username);
-
+  const [logoutModal, setLogoutModal] = useState(false);
   return (
     <View style={styles.container}>
       <View>
+        <LogOutModal
+          modal={logoutModal}
+          onClose={() => setLogoutModal(false)}
+          setToken={setToken}
+        />
+
         <View style={styles.headerContainer}>
           <View style={styles.rowContainer}>
             <Image
@@ -25,11 +30,12 @@ const HeaderHomeView = ({ navigation }) => {
               <Text style={styles.nameTxt}>{userData?.username}</Text>
             </View>
           </View>
+
           <MaterialIcons
             name="logout"
             size={28}
             color="#fff"
-            onPress={() => {}}
+            onPress={() => setLogoutModal(true)}
           />
         </View>
         <SizeBox height={13} />
@@ -41,7 +47,7 @@ const HeaderHomeView = ({ navigation }) => {
   );
 };
 
-export default HeaderHomeView;
+export default HomeHeaderView;
 const styles = StyleSheet.create({
   container: {
     height: 100,

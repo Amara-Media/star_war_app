@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import CharacterItem from "./character_item";
 import { Ionicons } from "@expo/vector-icons";
@@ -10,7 +16,11 @@ import PaginationView from "./pagination_view";
 import CustomLoading from "../../../components/base/custom/custom_loading";
 import PrimaryBtn from "../../../components/base/btn/primary_btn";
 import NoResultContainer from "../../../components/base/custom/no_result_container";
+import { v4 as uuidv4 } from "uuid";
+
 const CharacterView = () => {
+  const [refreshing, setRefreshing] = useState(false);
+
   const [searchText, setSearchText] = useState("");
   const [people, setPeople] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -19,6 +29,14 @@ const CharacterView = () => {
     next: true,
     previous: false,
   });
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      setSearchText("");
+    }, 2000);
+  }, []);
 
   const fetchData = async () => {
     setLoading(true);
@@ -38,7 +56,12 @@ const CharacterView = () => {
   }, [page, searchText]);
 
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <View style={styles.rowContainer}>
         <View style={styles.inputContainer}>
           <Ionicons name="search" size={24} color={ColorManager.hintColor} />
@@ -75,14 +98,14 @@ const CharacterView = () => {
           </View>
         </ScrollView>
       )}
-      {!loading && (
+      {!loading && people.length != 0 && (
         <PaginationView
           page={page}
           setPage={setPage}
           forwardEnable={query.next}
         />
       )}
-    </View>
+    </ScrollView>
   );
 };
 

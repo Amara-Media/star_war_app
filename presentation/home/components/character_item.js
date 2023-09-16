@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -9,13 +9,32 @@ import { GlobalStyle } from "../../../style/global_styles";
 import BoldText from "../../../components/base/text/bold_text";
 import SizeBox from "../../../components/base/custom/size_box";
 import { ColorManager } from "../../../core/resources/color_manager";
+import CharacterDetailModal from "./character_detail_modal";
+import { fetchHomeWorldByPerson } from "../../../data/home_world/home_world";
 
 const CharacterItem = ({ data, index }) => {
   const [hover, setHover] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [homeWorld, setHomeWorld] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchHWData = async () => {
+    setLoading(true);
+    const hwData = await fetchHomeWorldByPerson({ url: data?.homeworld });
+    setHomeWorld(hwData);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (data?.homeworld) {
+      fetchHWData();
+    }
+  }, [data?.homeworld]);
   return (
     <TouchableWithoutFeedback
       onPressIn={() => setHover(true)}
       onPressOut={() => setHover(false)}
+      onPress={() => setModalOpen(true)}
     >
       <View
         style={[
@@ -47,6 +66,13 @@ const CharacterItem = ({ data, index }) => {
                 : ColorManager.gray02
               : ColorManager.primaryFontColor
           }
+        />
+        <CharacterDetailModal
+          modal={modalOpen}
+          onClose={() => setModalOpen(false)}
+          data={data}
+          homeWorld={homeWorld}
+          loading={loading}
         />
       </View>
     </TouchableWithoutFeedback>

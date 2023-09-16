@@ -6,6 +6,7 @@ import * as SecureStore from "expo-secure-store";
 import { setUserData } from "../stores/user";
 import HomeNavigator from "./home_navigator";
 import dayjs from "dayjs";
+import "react-native-get-random-values";
 
 const AppNavigator = () => {
   var advancedFormat = require("dayjs/plugin/advancedFormat");

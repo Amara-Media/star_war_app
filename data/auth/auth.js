@@ -1,5 +1,11 @@
+import { showToast } from "../../utils/toast";
+
 export const login = ({ username, password }) => {
   if (username == "tso@gmail.com" && password == "User123**") {
+    showToast({
+      desc: "Successful login",
+      type: "success",
+    });
     const jwt =
       "eyJhbGciOiJIUzI1NiJ9.eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6InRoYW5zb2Vvb0BnbWFpbC5jb20iLCJleHAiOjE2OTQ4NDMzMDcsImlhdCI6MTY5NDg0MzMwN30.hEN_LuzcM7YBBPhLbweT4ZGBWyvlWGCO7IyQ2pIufpc";
     const response = {
@@ -11,6 +17,10 @@ export const login = ({ username, password }) => {
     };
     return response;
   } else {
+    showToast({
+      desc: "Invalid identifier or password.",
+      type: "error",
+    });
     const response = {
       error: {
         status: 400,

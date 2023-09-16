@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import LogoIcon from "../../../../assets/icons/logo_icon";
 import BoldText from "../../../../components/base/text/bold_text";
 import SizeBox from "../../../../components/base/custom/size_box";

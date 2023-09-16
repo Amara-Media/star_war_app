@@ -27,8 +27,6 @@ export default function App() {
       "Inter-light": require("./assets/fonts/Inter-Light.ttf"),
       "Inter-medium": require("./assets/fonts/Inter-Medium.ttf"),
       "Inter-regular": require("./assets/fonts/Inter-Regular.ttf"),
-      ...Icon.Ionicons.font,
-      ...Icon.MaterialIcons.font,
     });
     setLoading(true);
   }

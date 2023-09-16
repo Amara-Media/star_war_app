@@ -16,6 +16,7 @@ import { EmailValidation } from "../../../../utils/email_validation";
 import * as SecureStore from "expo-secure-store";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../../../stores/user";
+import CustomLoading from "../../../../components/base/custom/custom_loading";
 
 const InputLoginView = ({ setToken }) => {
   const dispatch = useDispatch();
@@ -28,8 +29,8 @@ const InputLoginView = ({ setToken }) => {
   const [emailValidation, setEmailValidation] = useState(true);
 
   const handleLogin = async () => {
+    setLoading(true);
     const response = login({ username: email, password: password });
-    console.log("response", response);
     if (response.data) {
       const { jwt } = response.data;
       if (rememberMe) {
@@ -41,13 +42,16 @@ const InputLoginView = ({ setToken }) => {
         await dispatch(setUserData(user));
         SecureStore.setItemAsync("token", jwt);
         setToken(jwt);
+        setLoading(false);
       } else {
         setToken("One Time Login");
         SecureStore.setItemAsync("user", JSON.stringify(user));
         await dispatch(setUserData(user));
+        setLoading(false);
       }
     } else {
       setErrMsg(response.error?.message);
+      setLoading(false);
     }
   };
 
