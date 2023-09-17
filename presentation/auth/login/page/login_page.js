@@ -1,5 +1,4 @@
 import React from "react";
-import { Text, View } from "react-native";
 import AuthLayout from "../../../../components/base/layout/auth_layout";
 import HeaderLoginView from "../components/header_login_view";
 import SizeBox from "../../../../components/base/custom/size_box";

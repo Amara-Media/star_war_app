@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { View } from "react-native";
 import BoldText from "../../../components/base/text/bold_text";
@@ -6,8 +6,26 @@ import { Ionicons } from "@expo/vector-icons";
 import SizeBox from "../../../components/base/custom/size_box";
 import dayjs from "dayjs";
 import CustomLoading from "../../../components/base/custom/custom_loading";
+import RegularText from "../../../components/base/text/regular_text";
+import { fetchHomeWorldByPerson } from "../../../data/home_world/home_world";
 
-const CharacterDetailModal = ({ modal, onClose, data, homeWorld, loading }) => {
+const CharacterDetailModal = ({ modal, onClose, data }) => {
+  const [homeWorld, setHomeWorld] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchHWData = async () => {
+    setLoading(true);
+    const hwData = await fetchHomeWorldByPerson({ url: data?.homeworld });
+    setHomeWorld(hwData);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (data?.homeworld) {
+      fetchHWData();
+    }
+  }, [data?.homeworld]);
+
   const list_label = ({ title = "", value = "" }) => {
     return (
       <View
@@ -69,7 +87,7 @@ const CharacterDetailModal = ({ modal, onClose, data, homeWorld, loading }) => {
             })}
             {loading ? (
               <CustomLoading />
-            ) : (
+            ) : homeWorld ? (
               <View style={{ width: "100%" }}>
                 <View>
                   <BoldText name="HomeWorld" fontSize={16} />
@@ -92,6 +110,8 @@ const CharacterDetailModal = ({ modal, onClose, data, homeWorld, loading }) => {
                   value: `${homeWorld?.residentsCount ?? 0} residents`,
                 })}
               </View>
+            ) : (
+              <RegularText name="No home world data" />
             )}
           </View>
         </View>

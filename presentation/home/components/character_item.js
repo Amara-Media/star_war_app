@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -10,26 +10,10 @@ import BoldText from "../../../components/base/text/bold_text";
 import SizeBox from "../../../components/base/custom/size_box";
 import { ColorManager } from "../../../core/resources/color_manager";
 import CharacterDetailModal from "./character_detail_modal";
-import { fetchHomeWorldByPerson } from "../../../data/home_world/home_world";
-
 const CharacterItem = ({ data, index }) => {
   const [hover, setHover] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [homeWorld, setHomeWorld] = useState([]);
-  const [loading, setLoading] = useState(false);
 
-  const fetchHWData = async () => {
-    setLoading(true);
-    const hwData = await fetchHomeWorldByPerson({ url: data?.homeworld });
-    setHomeWorld(hwData);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (data?.homeworld) {
-      fetchHWData();
-    }
-  }, [data?.homeworld]);
   return (
     <TouchableWithoutFeedback
       onPressIn={() => setHover(true)}
@@ -42,7 +26,7 @@ const CharacterItem = ({ data, index }) => {
           styles.container,
           {
             backgroundColor: hover
-              ? data.eye_color.split("-")[0]
+              ? data?.eye_color.split("-")[0]
               : ColorManager.white,
             transform: hover ? "scale(1)" : "scale(0.9)",
           },
@@ -56,12 +40,12 @@ const CharacterItem = ({ data, index }) => {
         />
         <SizeBox height={20} />
         <BoldText
-          name={data.name}
+          name={data?.name}
           fontSize={14}
           isCenter={true}
           color={
             hover
-              ? data.eye_color.split("-")[0] == "white"
+              ? data?.eye_color.split("-")[0] == "white"
                 ? ColorManager.primaryFontColor
                 : ColorManager.gray02
               : ColorManager.primaryFontColor
@@ -71,8 +55,6 @@ const CharacterItem = ({ data, index }) => {
           modal={modalOpen}
           onClose={() => setModalOpen(false)}
           data={data}
-          homeWorld={homeWorld}
-          loading={loading}
         />
       </View>
     </TouchableWithoutFeedback>
